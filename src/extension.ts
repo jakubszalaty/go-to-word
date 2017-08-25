@@ -35,17 +35,18 @@ export function activate(context: vscode.ExtensionContext) {
             const allWords: any = R.pipe(
                 R.match(/\w+/g),
                 R.uniq,
-                R.mapObjIndexed((value, key) => ({ label: value, detail: key })),
+                R.mapObjIndexed((value, key) => ({ label: value })),
                 R.values,
             )(text)
 
             window.showQuickPick(allWords, {
+                placeHolder: 'Find word',
                 onDidSelectItem: (value: any) => {
 
                     const label = value.label
                     const detail = value.detail
                     const list = R.filter(R.propSatisfies((x) => x === label, 'label'))(allWords)
-                    const index = R.findIndex((x: any) => x.detail === detail, list)
+                    const index = 0
                     const regExp = new RegExp(String(label))
                     const lines = findWordLine(regExp, text)
 
@@ -55,8 +56,6 @@ export function activate(context: vscode.ExtensionContext) {
                     const line = parseInt(selectedLine.key, 10)
                     const length = selectedLine.match[0].length
                     const character = selectedLine.match.index
-
-                    console.log(line, length, character)
 
                     setCursorPosition(editor, line, character, length)
                 },
