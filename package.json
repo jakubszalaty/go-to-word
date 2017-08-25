@@ -1,8 +1,8 @@
 {
     "name": "go-to-word",
     "displayName": "Go to word",
-    "description": "Go to any word in current file",
-    "version": "0.0.1",
+    "description": "Go to any word in current file. Like Sublime text Goto #",
+    "version": "0.1.0",
     "publisher": "jakubszalaty",
     "engines": {
         "vscode": "^1.15.0"

@@ -8,6 +8,7 @@ import {
     Selection,
     QuickPickItem,
     TextEditor,
+    commands,
 } from 'vscode'
 
 
@@ -21,17 +22,6 @@ export function activate(context: vscode.ExtensionContext) {
             const document = editor.document
             const text = document.getText()
 
-            const findWordLine = (regExp, str) => {
-                const lines = str.split('\n')
-                const result =
-                    R.pipe(
-                        R.mapObjIndexed((value: string, key) => ({ match: R.match(regExp, value), key })),
-                        R.pickBy((value, key) => R.pipe(R.prop('match'), R.length, R.equals(0), R.not)(value)),
-                        R.values,
-                    )(lines)
-                return result
-            }
-
             const allWords: any = R.pipe(
                 R.match(/\w+/g),
                 R.uniq,
@@ -39,26 +29,18 @@ export function activate(context: vscode.ExtensionContext) {
                 R.values,
             )(text)
 
+            let lastQuery = ''
+
             window.showQuickPick(allWords, {
                 placeHolder: 'Find word',
                 onDidSelectItem: (value: any) => {
-
-                    const label = value.label
-                    const detail = value.detail
-                    const list = R.filter(R.propSatisfies((x) => x === label, 'label'))(allWords)
-                    const index = 0
-                    const regExp = new RegExp(String(label))
-                    const lines = findWordLine(regExp, text)
-
-
-                    const selectedLine: any = lines[index]
-
-                    const line = parseInt(selectedLine.key, 10)
-                    const length = selectedLine.match[0].length
-                    const character = selectedLine.match.index
-                    // @TODO: clear find input before setCursorPosition or insert value to find input
-                    setCursorPosition(editor, line, character, length)
+                    moveToWord(value, editor, allWords, text)
                 },
+            }).then((value: any) => {
+                lastQuery = value.label
+                moveToWord(value, editor, allWords, text)
+                commands.executeCommand('editor.action.addSelectionToNextFindMatch')
+
             })
         })
 
@@ -77,4 +59,33 @@ function setCursorPosition(editor: TextEditor, line: number, character: number, 
     const newSelection = new Selection(start, end)
     editor.revealRange(new Range(start, bottom))
     editor.selection = newSelection
+}
+
+function findWordLine(regExp, str) {
+    const lines = str.split('\n')
+    const result =
+        R.pipe(
+            R.mapObjIndexed((value: string, key) => ({ match: R.match(regExp, value), key })),
+            R.pickBy((value, key) => R.pipe(R.prop('match'), R.length, R.equals(0), R.not)(value)),
+            R.values,
+        )(lines)
+    return result
+}
+
+function moveToWord(value: any, editor, allWords, text) {
+
+    const label = value.label
+    const detail = value.detail
+    const list = R.filter(R.propSatisfies((x) => x === label, 'label'))(allWords)
+    const index = 0
+    const regExp = new RegExp(String(label))
+    const lines = findWordLine(regExp, text)
+
+
+    const selectedLine: any = lines[index]
+
+    const line = parseInt(selectedLine.key, 10)
+    const length = selectedLine.match[0].length
+    const character = selectedLine.match.index
+    setCursorPosition(editor, line, character, length)
 }
