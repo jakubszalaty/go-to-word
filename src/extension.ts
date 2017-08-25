@@ -56,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
                     const line = parseInt(selectedLine.key, 10)
                     const length = selectedLine.match[0].length
                     const character = selectedLine.match.index
-
+                    // @TODO: clear find input before setCursorPosition or insert value to find input
                     setCursorPosition(editor, line, character, length)
                 },
             })
