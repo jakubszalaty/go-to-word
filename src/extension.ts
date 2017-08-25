@@ -1,29 +1,81 @@
-'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+'use strict'
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+import * as vscode from 'vscode'
+import {
+    window,
+    Position,
+    Range,
+    Selection,
+    QuickPickItem,
+    TextEditor,
+} from 'vscode'
+
+
+import * as R from 'ramda'
+
 export function activate(context: vscode.ExtensionContext) {
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "go-to-word" is now active!');
+    const goToWord = vscode.commands
+        .registerCommand('goToWord.find', () => {
+            const editor = window.activeTextEditor
+            const document = editor.document
+            const text = document.getText()
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
-        // The code you place here will be executed every time your command is executed
+            const findWordLine = (regExp, str) => {
+                const lines = str.split('\n')
+                const result =
+                    R.pipe(
+                        R.mapObjIndexed((value: string, key) => ({ match: R.match(regExp, value), key })),
+                        R.pickBy((value, key) => R.pipe(R.prop('match'), R.length, R.equals(0), R.not)(value)),
+                        R.values,
+                    )(lines)
+                return result
+            }
 
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
-    });
+            const allWords: any = R.pipe(
+                R.match(/\w+/g),
+                R.uniq,
+                R.mapObjIndexed((value, key) => ({ label: value, detail: key })),
+                R.values,
+            )(text)
 
-    context.subscriptions.push(disposable);
+            window.showQuickPick(allWords, {
+                onDidSelectItem: (value: any) => {
+
+                    const label = value.label
+                    const detail = value.detail
+                    const list = R.filter(R.propSatisfies((x) => x === label, 'label'))(allWords)
+                    const index = R.findIndex((x: any) => x.detail === detail, list)
+                    const regExp = new RegExp(String(label))
+                    const lines = findWordLine(regExp, text)
+
+
+                    const selectedLine: any = lines[index]
+
+                    const line = parseInt(selectedLine.key, 10)
+                    const length = selectedLine.match[0].length
+                    const character = selectedLine.match.index
+
+                    console.log(line, length, character)
+
+                    setCursorPosition(editor, line, character, length)
+                },
+            })
+        })
+
+    context.subscriptions.push(goToWord)
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {
+    // empty
+}
+
+function setCursorPosition(editor: TextEditor, line: number, character: number, length: number) {
+    const start = new Position(line, character)
+    const end = new Position(line, character + length)
+
+    const bottom = new Position(line + 50, 0)
+    const newSelection = new Selection(start, end)
+    editor.revealRange(new Range(start, bottom))
+    editor.selection = newSelection
 }
