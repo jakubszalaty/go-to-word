@@ -1,6 +1,6 @@
 {
     "name": "go-to-word",
-    "displayName": "Go to word",
+    "displayName": "Go to Word",
     "description": "Go to any word in current file. Like Sublime text Goto #",
     "version": "0.1.0",
     "publisher": "jakubszalaty",

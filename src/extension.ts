@@ -39,7 +39,9 @@ export function activate(context: vscode.ExtensionContext) {
             }).then((value: any) => {
                 lastQuery = value.label
                 moveToWord(value, editor, allWords, text)
+                // #Hack. Add selected word into find input
                 commands.executeCommand('editor.action.addSelectionToNextFindMatch')
+                commands.executeCommand('removeSecondaryCursors')
 
             })
         })
@@ -54,11 +56,17 @@ export function deactivate() {
 function setCursorPosition(editor: TextEditor, line: number, character: number, length: number) {
     const start = new Position(line, character)
     const end = new Position(line, character + length)
-
-    const bottom = new Position(line + 50, 0)
     const newSelection = new Selection(start, end)
-    editor.revealRange(new Range(start, bottom))
-    editor.selection = newSelection
+
+    const top = line - 20 >= 0 ? line - 20 : 0
+    const topPosition = new Position(top, 0)
+    const bottom = line + 20
+    const bottomPosition = new Position(bottom, 0)
+    const newRange = new Range(topPosition, bottomPosition)
+
+
+    editor.revealRange(newRange)
+    editor.selections = [newSelection]
 }
 
 function findWordLine(regExp, str) {
