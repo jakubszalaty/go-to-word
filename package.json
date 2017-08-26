@@ -2,7 +2,7 @@
     "name": "go-to-word",
     "displayName": "Go to Word",
     "description": "Go to any word in current file. Like Sublime text Goto #",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "publisher": "jakubszalaty",
     "engines": {
         "vscode": "^1.15.0"
@@ -10,9 +10,15 @@
     "categories": [
         "Other"
     ],
+    "license": "SEE LICENSE IN LICENSE.md",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jakubszalaty/go-to-word"
+    },
     "activationEvents": [
         "onCommand:goToWord.find"
     ],
+    "icon": "images/got-to-word.png",
     "main": "./out/src/extension",
     "contributes": {
         "commands": [
