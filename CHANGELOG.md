@@ -1,6 +1,12 @@
 # Change Log
 
 
+## Since 0.2.2 (27 Aug 2017):
+- Added keywords
+
+## Since 0.2.1 (26 Aug 2017):
+- Added icon
+
 ## Since 0.2.0 (26 Aug 2017):
 - Improve display selected word
 - Added execute command `removeSecondaryCursors` to remove multiple selections
