@@ -2,13 +2,19 @@
     "name": "go-to-word",
     "displayName": "Go to Word",
     "description": "Go to any word in current file. Like Sublime text Goto #",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "publisher": "jakubszalaty",
     "engines": {
         "vscode": "^1.15.0"
     },
     "categories": [
         "Other"
+    ],
+    "keywords": [
+        "search",
+        "sublime",
+        "word",
+        "go to"
     ],
     "license": "SEE LICENSE IN LICENSE.md",
     "repository": {
