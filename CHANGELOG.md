@@ -1,6 +1,10 @@
 # Change Log
 
 
+## Since 0.2.3 (28 Aug 2017):
+- Added execute command `actions.find` after select word
+- Added back to previous position after cancel search
+
 ## Since 0.2.2 (27 Aug 2017):
 - Added keywords
 

@@ -30,20 +30,31 @@ export function activate(context: vscode.ExtensionContext) {
             )(text)
 
             let lastQuery = ''
+            const startSelections = editor.selections
 
-            window.showQuickPick(allWords, {
-                placeHolder: 'Find word',
-                onDidSelectItem: (value: any) => {
-                    moveToWord(value, editor, allWords, text)
-                },
-            }).then((value: any) => {
-                lastQuery = value.label
-                moveToWord(value, editor, allWords, text)
-                // #Hack. Add selected word into find input
-                commands.executeCommand('editor.action.addSelectionToNextFindMatch')
-                commands.executeCommand('removeSecondaryCursors')
+            window.showQuickPick(allWords,
+                {
+                    placeHolder: 'Find word',
+                    onDidSelectItem: (value: any) => {
+                        moveToWord(value, editor, allWords, text)
+                    },
+                }).then((value: any) => {
+                    if (value) {
 
-            })
+                        lastQuery = value.label
+                        moveToWord(value, editor, allWords, text)
+                        // #Hack. Add selected word into find input
+                        commands.executeCommand('actions.find')
+                    } else {
+                        const line = startSelections[0].start.line
+                        scrollToLine(editor, line)
+                        editor.selections = startSelections
+
+
+                    }
+
+
+                })
         })
 
     context.subscriptions.push(goToWord)
@@ -58,14 +69,7 @@ function setCursorPosition(editor: TextEditor, line: number, character: number, 
     const end = new Position(line, character + length)
     const newSelection = new Selection(start, end)
 
-    const top = line - 20 >= 0 ? line - 20 : 0
-    const topPosition = new Position(top, 0)
-    const bottom = line + 20
-    const bottomPosition = new Position(bottom, 0)
-    const newRange = new Range(topPosition, bottomPosition)
-
-
-    editor.revealRange(newRange)
+    scrollToLine(editor, line)
     editor.selections = [newSelection]
 }
 
@@ -96,4 +100,13 @@ function moveToWord(value: any, editor, allWords, text) {
     const length = selectedLine.match[0].length
     const character = selectedLine.match.index
     setCursorPosition(editor, line, character, length)
+}
+
+function scrollToLine(editor, line: number) {
+    const top = line - 20 >= 0 ? line - 20 : 0
+    const topPosition = new Position(top, 0)
+    const bottom = line + 20
+    const bottomPosition = new Position(bottom, 0)
+    const newRange = new Range(topPosition, bottomPosition)
+    editor.revealRange(newRange)
 }
