@@ -25,7 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
             const allWords: any = R.pipe(
                 R.match(/\w+/g),
                 R.uniq,
-                R.mapObjIndexed((value, key) => ({ label: value })),
+                // #Hack. To simulate fuzzy search in quickpick
+                R.mapObjIndexed((value: string, key) => ({ label: value, description: value.toUpperCase().split('').join('i') })),
                 R.values,
             )(text)
 
@@ -38,6 +39,8 @@ export function activate(context: vscode.ExtensionContext) {
                     onDidSelectItem: (value: any) => {
                         moveToWord(value, editor, allWords, text)
                     },
+                    matchOnDescription: true,
+
                 }).then((value: any) => {
                     if (value) {
 
