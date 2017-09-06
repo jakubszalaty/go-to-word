@@ -15,3 +15,7 @@ Add to `keybindings.json` file
 ```
 
 <img src="https://lh3.googleusercontent.com/aH08_36h5GmHbTAZjFAcIPVbmStUPFgOicgo7x962wkboJ3C4HwzaY66G7QEXOCTGmLX1Srbw2ZdU5QgAuwv8gDUel3wDmEQTNuGuhAbB-TuORIb1l9fwjul2-pkuOQDyGHdsX2LBA=w871-h637-no" alt="example"/>
+
+## Links
+- [Marketplace](https://marketplace.visualstudio.com/items?itemName=jakubszalaty.go-to-word)
+- [GitHub](https://github.com/jakubszalaty/go-to-word)
