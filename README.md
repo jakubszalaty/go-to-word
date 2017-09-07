@@ -14,6 +14,16 @@ Add to `keybindings.json` file
 }
 ```
 
+## Options
+
+Override default match word RegExp in User Settings or Workspace Settings
+
+```json
+{
+    "goToWord.matchRegExp": "((?![\\. <>`'\"\\!@#\\$%\\^&\\*\\(\\)=\\+]).)+"
+}
+```
+
 <img src="https://lh3.googleusercontent.com/aH08_36h5GmHbTAZjFAcIPVbmStUPFgOicgo7x962wkboJ3C4HwzaY66G7QEXOCTGmLX1Srbw2ZdU5QgAuwv8gDUel3wDmEQTNuGuhAbB-TuORIb1l9fwjul2-pkuOQDyGHdsX2LBA=w871-h637-no" alt="example"/>
 
 ## Links

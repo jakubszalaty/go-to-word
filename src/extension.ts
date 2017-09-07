@@ -9,6 +9,7 @@ import {
     QuickPickItem,
     TextEditor,
     commands,
+    workspace,
 } from 'vscode'
 
 
@@ -21,12 +22,17 @@ export function activate(context: vscode.ExtensionContext) {
             const editor = window.activeTextEditor
             const document = editor.document
             const text = document.getText()
+            const settings = workspace.getConfiguration('goToWord')
 
+
+            const matchRegExpString = settings.get('matchRegExp', '((?![\. <>`\'"\!@#\$%\^&\*\(\)=\+]).)+')
+
+            console.log(matchRegExpString)
+            const matchRegExp = new RegExp(matchRegExpString, 'g')
             const allWords: any = R.pipe(
-                R.match(/\w+/g),
+                R.match(matchRegExp),
                 R.uniq,
-                // #Hack. To simulate fuzzy search in quickpick
-                R.mapObjIndexed((value: string, key) => ({ label: value, description: value.toUpperCase().split('').join('i') })),
+                R.mapObjIndexed((value: string, key) => ({ label: value })),
                 R.values,
             )(text)
 
@@ -39,8 +45,6 @@ export function activate(context: vscode.ExtensionContext) {
                     onDidSelectItem: (value: any) => {
                         moveToWord(value, editor, allWords, text)
                     },
-                    matchOnDescription: true,
-
                 }).then((value: any) => {
                     if (value) {
 

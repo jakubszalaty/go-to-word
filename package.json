@@ -34,6 +34,17 @@
             }
         ]
     },
+    "configuration": {
+        "title": "Go to word configuration",
+        "type": "object",
+        "properties": {
+            "goToWord.matchRegExp": {
+                "type": "string",
+                "default": "((?![\\. <>`'\"\\!@#\\$%\\^&\\*\\(\\)=\\+]).)+",
+                "description": "Regexp for search words in file."
+            }
+        }
+    },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
         "compile": "tsc -watch -p ./",

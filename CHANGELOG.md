@@ -1,6 +1,10 @@
 # Change Log
 
 
+## Since 0.2.4 (7 Sep 2017):
+- Change search word regExp from '\w+' to '((?![. <>`'"!@#$%^&*()=+]).)+'
+- Added option to change search word regExp `goToWord.matchRegExp`
+
 ## Since 0.2.3 (28 Aug 2017):
 - Added execute command `actions.find` after select word
 - Added back to previous position after cancel search
