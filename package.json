@@ -2,7 +2,7 @@
     "name": "go-to-word",
     "displayName": "Go to Word",
     "description": "Go to any word in current file. Like Sublime text Goto #",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "publisher": "jakubszalaty",
     "engines": {
         "vscode": "^1.15.0"
@@ -40,7 +40,7 @@
         "properties": {
             "goToWord.matchRegExp": {
                 "type": "string",
-                "default": "((?![\\. <>`'\"\\!@#\\$%\\^&\\*\\(\\)=\\+]).)+",
+                "default": "\\w+",
                 "description": "Regexp for search words in file."
             }
         }

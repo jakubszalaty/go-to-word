@@ -1,6 +1,9 @@
 # Change Log
 
 
+## Since 0.2.5 (7 Sep 2017):
+- Restore default search word regExp to '\w+'
+
 ## Since 0.2.4 (7 Sep 2017):
 - Change search word regExp from '\w+' to '((?![. <>`'"!@#$%^&*()=+]).)+'
 - Added option to change search word regExp `goToWord.matchRegExp`
