@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
             const settings = workspace.getConfiguration('goToWord')
 
 
-            const matchRegExpString = settings.get('matchRegExp', '\\w+')
+            const matchRegExpString = settings.get('matchRegExp', '[^\\s`~!@#$%^&*()-=+\\[{\\]}\\|;:\'",\\.<>/?]+')
 
             const matchRegExp = new RegExp(matchRegExpString, 'g')
             const allWords: any = R.pipe(

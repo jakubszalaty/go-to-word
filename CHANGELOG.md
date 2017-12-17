@@ -1,6 +1,9 @@
 # Change Log
 
 
+## Since 0.2.6 (17 Dec 2017):
+- Change search word regExp from '\w+' to '[^\\s`~!@#$%^&*()-=+\\[{\\]}\\|;:\'",\\.<>/?]+'
+
 ## Since 0.2.5 (7 Sep 2017):
 - Restore default search word regExp to '\w+'
 

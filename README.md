@@ -20,7 +20,7 @@ Override default match word RegExp in User Settings or Workspace Settings
 
 ```json
 {
-    "goToWord.matchRegExp": "\\w+"
+    "goToWord.matchRegExp": "[^\\s`~!@#$%^&*()-=+\\[{\\]}\\|;:'\",\\.<>/?]+"
 }
 ```
 
